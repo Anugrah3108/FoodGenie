@@ -1,0 +1,13 @@
+import React from 'react';
+import { Navigate } from 'react-router-dom';
+import { AuthContext } from '../context/AuthContext';
+
+export const ProtectedRoute = ({ children, requiredRole }) => {
+    const { user, loading } = React.useContext(AuthContext);
+
+    if (loading) return <div>Loading...</div>;
+    if (!user) return <Navigate to="/login" replace />;
+    if (requiredRole && user.role !== requiredRole) return <Navigate to="/menu" replace />;
+
+    return children;
+};
